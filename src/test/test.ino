@@ -1,17 +1,18 @@
 #include <Arduino.h>
+
 #include <GyverHub.h>
 GyverHub hub;
 
 void build(gh::Builder& b) {
-    bool sw;
-    if (b.Switch(&sw).click()) digitalWrite(LED_BUILTIN, !sw);
+    if (b.Switch().click()) digitalWrite(LED_BUILTIN, !b.build.value);
 }
 
 void setup() {
+    Serial.begin(115200);
     WiFi.mode(WIFI_AP);
-    WiFi.softAP("My Hub");
+    WiFi.softAP("My Device");
 
-    hub.config(F("MyDevices"), F("LED"));
+    hub.config(F("MyDevices"), F("ESP"));
     hub.onBuild(build);
     hub.begin();
 
